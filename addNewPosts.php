@@ -142,9 +142,18 @@ if(isset($_POST['Submit'])){
                         <div class="form-group">
                             <label for="categoryTitle"><span class="FieldInfo">Choose category: </span></label>
                             <select name="category" id="categoryTitle" class="form-control">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                                <?php
+                                $sql = "SELECT id,title FROM category";
+                                $stmt = $connectingDB->query($sql);
+
+                                while($dataRows = $stmt->fetch()){
+                                    $id = $dataRows['id'];
+                                    $categoryName = $dataRows['title'];
+                                    ?>
+                                    <option><?= $categoryName; ?></option>
+                                    <?php
+                                }
+                                ?>
                             </select>
                         </div>
 
