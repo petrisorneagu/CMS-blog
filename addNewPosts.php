@@ -8,44 +8,48 @@ $currentTime = time();
 $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
 
 if(isset($_POST['Submit'])){
-    $category = $_POST['categoryTitle'];
+    $postTitle = $_POST['postTitle'];
+    $category = $_POST['category'];
+    $image = $_FILES['image']['name'];
+    $postText = $_POST['PostDescription'];
+
+//    upload image dir
+    $target = 'upload/' . basename($_FILES['image']['name']);
     $Admin = 'admin';
 
-    if(empty($category)){
-        $_SESSION['ErrorMessage'] = 'You must fill all fields';
+    if(empty($postTitle)){
+        $_SESSION['ErrorMessage'] = 'Fill in post title';
 
-        Redirect_to('categories.php');
-    } elseif(strlen($category) < 2 ) {
-        $_SESSION['ErrorMessage'] = 'The category title must be at least 2 characters';
-        Redirect_to('categories.php');
+        Redirect_to('addNewPosts.php');
+    } elseif(strlen($postTitle) < 5 ) {
+        $_SESSION['ErrorMessage'] = 'Post title must be greater than 5 characters';
+        Redirect_to('addNewPosts.php');
     }
-    elseif(strlen($category) > 49 ) {
-        $_SESSION['ErrorMessage'] = 'The category title must be less than 50 characters';
-        Redirect_to('categories.php');
+    elseif(strlen($postTitle) > 999 ) {
+        $_SESSION['ErrorMessage'] = 'Post title should not exceed more than 1000 characters';
+        Redirect_to('addNewPosts.php');
     }else{
 //        insert data into database
-        $sql = "INSERT INTO category (title, author, datetime)";
-        $sql .= "VALUES (:categoryName, :adminName, :dateTime)";
+        $sql = "INSERT INTO posts (datetime, title, category, author, image, post)";
+        $sql .= "VALUES (:datetime, :postTitle, :category, :admin, :image, :PostDescription)"; //dummy values
         $stmt = $connectingDB->prepare($sql);
 
-        $stmt->bindValue(':categoryName', $category);
-        $stmt->bindValue(':adminName', $Admin);
-        $stmt->bindValue(':dateTime', $dateTime);
+        $stmt->bindValue(':datetime', $dateTime);
+        $stmt->bindValue(':postTitle', $postTitle);
+        $stmt->bindValue(':category', $category);
+        $stmt->bindValue(':admin', $Admin);
+        $stmt->bindValue(':image', $image);
+        $stmt->bindValue(':PostDescription', $postText);
 
         $execute=$stmt->execute();
-
+        move_uploaded_file($_FILES['image']['tmp_name'], $target);
         if($execute){
-            $_SESSION['SuccessMessage'] = 'Category with id: '.$connectingDB->lastInsertId().' was added successfully';
-            Redirect_to('categories.php');
+            $_SESSION['SuccessMessage'] = 'Post with id: '.$connectingDB->lastInsertId().' was added successfully';
+            Redirect_to('addNewPosts.php');
         }else{
             $_SESSION['ErrorMessage'] = 'Something went wrong';
-            Redirect_to('categories.php');
+            Redirect_to('addNewPosts.php');
         }
-
-
-
-
-
     }
 }
 
@@ -131,7 +135,7 @@ if(isset($_POST['Submit'])){
             echo  SuccessMessage();
             ?>
 
-            <form  action="categories.php" method="post">
+            <form action="addNewPosts.php" method="post" enctype="multipart/form-data">
                 <div class="card">
 
                     <div class="card-body bg-dark">
@@ -159,7 +163,7 @@ if(isset($_POST['Submit'])){
 
                         <div class="form-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="imageSelect" id="imageSelect" value="">
+                                <input type="file" class="custom-file-input" name="image" id="imageSelect" value="">
                                 <label for="imageSelect" class="custom-file-label">Select image</label>
                             </div>
                         </div>
