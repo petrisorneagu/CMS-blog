@@ -1,18 +1,49 @@
 <?php
+
 require_once 'includes/DB.php';
 require_once 'includes/functions.php';
+require_once 'includes/sessions.php';
+
+$currentTime = time();
+$dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
 
 if(isset($_POST['Submit'])){
- $categoryTitle = $_POST['categoryTitle'];
+    $category = $_POST['categoryTitle'];
+    $Admin = 'admin';
 
- if(empty($categoryTitle)){
-     $Error = 'empty field';
+    if(empty($category)){
+        $_SESSION['ErrorMessage'] = 'You must fill all fields';
 
-     redirect('Location:' . redirectTo());
- }
+        Redirect_to('categories.php');
+    } elseif(strlen($category) < 2 ) {
+        $_SESSION['ErrorMessage'] = 'The category title must be at least 2 characters';
+        Redirect_to('categories.php');
+    }
+    elseif(strlen($category) > 49 ) {
+        $_SESSION['ErrorMessage'] = 'The category title must be less than 50 characters';
+        Redirect_to('categories.php');
+    }else{
+//        insert data into database
+        $sql = "INSERT INTO category (title, author, datetime)";
+        $sql .= "VALUES (:categoryName, :adminName, :dateTime)";
+        $stmt = $connectingDB->prepare($sql);
 
+        $stmt->bindValue(':categoryName', $category);
+        $stmt->bindValue(':adminName', $Admin);
+        $stmt->bindValue(':dateTime', $dateTime);
+
+        $execute=$stmt->execute();
+
+        if($execute){
+            $_SESSION['SuccessMessage'] = 'Category with id: '.$connectingDB->lastInsertId().' was added successfully';
+            Redirect_to('categories.php');
+        }else{
+            $_SESSION['ErrorMessage'] = 'Something went wrong';
+            Redirect_to('categories.php');
+        }
+
+    }
 }
-
 
 
 ?>
@@ -81,7 +112,7 @@ if(isset($_POST['Submit'])){
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1> <i class="fas fa-edit" style="color: rgba(62,81,180,0.7)"> </i> Manage Categories</h1>
+                <h1> <i class="fas fa-edit" style="color: rgba(62,81,180,0.7)"> </i>Manage Categories</h1>
             </div>
         </div>
     </div>
@@ -91,15 +122,20 @@ if(isset($_POST['Submit'])){
     <div class="row">
         <div class="offset-lg-1 col-lg-10" style="min-height: 700px;">
 
-            <form class="" action="categories.php" method="post">
+            <?php
+            echo  ErrorMessage();
+            echo  SuccessMessage();
+            ?>
+
+            <form  action="categories.php" method="post">
                 <div class="card">
                     <div class="card-header bg-secondary text-light mb-3">
                         <h1>Add new category</h1>
-
                     </div>
+
                     <div class="card-body bg-dark">
                         <div class="form-group">
-                            <label for="title"><span class="FieldInfo"> Category title: </span></label>
+                            <label for="title"><span class="FieldInfo">Category title: </span></label>
                             <input type="text" class="form-control" name="categoryTitle" id="title" placeholder="Type title here" value="">
                         </div>
                         <div class="row">
@@ -107,15 +143,13 @@ if(isset($_POST['Submit'])){
                                 <a href="dashboard.php" class="btn btn-warning btn-block mb-2"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
                             </div>
                             <div class="col-lg-6">
-                                <button  type="button" name="Submit" class="btn btn-success btn-block mb-2`">
+                                <button  type="submit" name="Submit" class="btn btn-success btn-block mb-2`">
                                     <i class="fas fa-check">Publish</i>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </form>
 
         </div>
