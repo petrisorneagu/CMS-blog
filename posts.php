@@ -1,3 +1,9 @@
+<?php
+require_once 'includes/DB.php';
+require_once 'includes/functions.php';
+require_once 'includes/sessions.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,17 +76,17 @@
                 </a>
             </div>
             <div class="col-lg-3 mb-2">
-                <a href="categories.php" class="btn btn-info btn-block" >
+                <a href="Categories.php" class="btn btn-info btn-block" >
                     <i class="fas fa-folder-plus"></i>Add new category
                 </a>
             </div>
             <div class="col-lg-3 mb-2">
-                <a href="admins.php" class="btn btn-warning btn-block" >
+                <a href="Admins.php" class="btn btn-warning btn-block" >
                     <i class="fas fa-user-plus"></i>Add new admin
                 </a>
             </div>
             <div class="col-lg-3 mb-2">
-                <a href="comments.php" class="btn btn-success btn-block" >
+                <a href="Comments.php" class="btn btn-success btn-block" >
                     <i class="fas fa-check"></i>Approve comments
                 </a>
             </div>
@@ -91,6 +97,64 @@
     </div>
 </header>
 <br>
+
+<!--main area-->
+<section class="container py-2 mb-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Date & Time</th>
+                    <th>Author</th>
+                    <th>Banner</th>
+                    <th>Comments</th>
+                    <th>Action</th>
+                    <th>Live Preview</th>
+                </tr>
+
+                <?php
+
+                $sql = "SELECT * FROM posts";
+                $stmt = $connectingDB->query($sql);
+
+                while($dataRows = $stmt->fetch()) {
+                    $id = $dataRows['id'];
+                    $dateTime = $dataRows['datetime'];
+                    $PostTitle = $dataRows['title'];
+                    $Category = $dataRows['category'];
+                    $Admin = $dataRows['author'];
+                    $Image = $dataRows['image'];
+                    $PostText = $dataRows['post'];
+
+
+                ?>
+
+                <tr>
+                    <td>#</td>
+                    <td><?php echo $PostTitle; ?></td>
+                    <td><?php echo $Category; ?></td>
+                    <td><?php echo $dateTime; ?></td>
+                    <td><?php echo $Admin; ?></td>
+                    <td><?php echo $Image; ?></td>
+                    <td>Comments</td>
+                    <td>Action</td>
+                    <td>Live preview</td>
+
+
+
+                </tr>
+                <?php } ?>
+
+
+
+            </table>
+        </div>
+    </div>
+</section>
+
 
 <!--footer-->
 <div style="height:10px; background-color: rgba(62,81,180,0.7)"></div>
