@@ -14,14 +14,14 @@ if(isset($_POST['Submit'])){
     if(empty($category)){
         $_SESSION['ErrorMessage'] = 'You must fill all fields';
 
-        Redirect_to('categories.php');
+        Redirect_to('Categories.php');
     } elseif(strlen($category) < 2 ) {
         $_SESSION['ErrorMessage'] = 'The category title must be at least 2 characters';
-        Redirect_to('categories.php');
+        Redirect_to('Categories.php');
     }
     elseif(strlen($category) > 49 ) {
         $_SESSION['ErrorMessage'] = 'The category title must be less than 50 characters';
-        Redirect_to('categories.php');
+        Redirect_to('Categories.php');
     }else{
 //        insert data into database
         $sql = "INSERT INTO category (title, author, datetime)";
@@ -36,10 +36,10 @@ if(isset($_POST['Submit'])){
 
         if($execute){
             $_SESSION['SuccessMessage'] = 'Category with id: '.$connectingDB->lastInsertId().' was added successfully';
-            Redirect_to('categories.php');
+            Redirect_to('Categories.php');
         }else{
             $_SESSION['ErrorMessage'] = 'Something went wrong';
-            Redirect_to('categories.php');
+            Redirect_to('Categories.php');
         }
 
     }
@@ -127,7 +127,7 @@ if(isset($_POST['Submit'])){
             echo  SuccessMessage();
             ?>
 
-            <form  action="categories.php" method="post">
+            <form action="Categories.php" method="post">
                 <div class="card">
                     <div class="card-header bg-secondary text-light mb-3">
                         <h1>Add new category</h1>
