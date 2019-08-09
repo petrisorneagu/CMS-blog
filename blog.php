@@ -1,3 +1,9 @@
+<?php
+require_once 'includes/DB.php';
+require_once 'includes/functions.php';
+require_once 'includes/sessions.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,8 +65,42 @@
 <div class="container">
     <div class="row mt-4">
         <div class="col-sm-8">
-            <h1>Test Test Test Test</h1>
-            <h1 class="lead">Test Test Test Test</h1>
+            <h1>Blog titles</h1>
+            <h1 class="lead">Blog titles</h1>
+
+            <?php
+                $sql = "SELECT * FROM posts ORDER BY id DESC";
+                $stmt = $connectingDB->query($sql);
+                while($dataRows = $stmt->fetch()){
+                    $PostId = $dataRows['id'];
+                    $DateTime = $dataRows['datetime'];
+                    $PostTitle = $dataRows['title'];
+                    $category = $dataRows['category'];
+                    $Admin = $dataRows['author'];
+                    $Image = $dataRows['image'];
+                    $PostDescription = $dataRows['post'];
+
+            ?>
+
+            <div class="card">
+                <img src="upload/<?php echo htmlentities($Image);?>" style="max-height: 450px; " class="img-fluid card-img-top">
+
+                <div class="card-body">
+                    <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
+
+                        <small class="text-muted">Written by <?php echo htmlentities($Admin) ;?> on <?php echo htmlentities($DateTime) ;?></small>
+                        <span style="float: right;" class="badge badge-dark text-light">Comments 20</span>
+                        <hr>
+                        <p class="card-text"> <?php if(strlen($PostDescription) > 150){
+                                echo substr($PostDescription, 0, 150) . '...';
+                            }?>
+                        </p>
+
+                    <a href="FullPost.php" style="float: right"><span class="btn btn-info">Read more >> </span></a>
+                </div>
+            </div>
+
+            <?php } ?>
 
         </div>
         <div class="col-sm-4" style="background-color: yellow">
