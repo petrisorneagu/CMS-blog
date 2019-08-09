@@ -69,18 +69,37 @@ require_once 'includes/sessions.php';
             <h1 class="lead">Blog titles</h1>
 
             <?php
+            //            sql query when search button active
+
+            if(isset($_GET['SearchButton'])){
+                $Search =  $_GET['Search'];
+
+                $sql = "SELECT * FROM posts WHERE
+                         datetime LIKE :search OR 
+                         title LIKE :search OR
+                         category LIKE :search OR
+                         post LIKE :search";
+
+                $stmt = $connectingDB->prepare($sql);
+                $stmt->bindValue(':search' , '%'.$Search.'%');
+                $stmt->execute();
+//                debug($stmt);
+
+            }else {
+//                default query without search
                 $sql = "SELECT * FROM posts ORDER BY id DESC";
                 $stmt = $connectingDB->query($sql);
-                while($dataRows = $stmt->fetch()){
-                    $PostId = $dataRows['id'];
-                    $DateTime = $dataRows['datetime'];
-                    $PostTitle = $dataRows['title'];
-                    $category = $dataRows['category'];
-                    $Admin = $dataRows['author'];
-                    $Image = $dataRows['image'];
-                    $PostDescription = $dataRows['post'];
+            }
+            while($dataRows = $stmt->fetch()){
+                $PostId = $dataRows['id'];
+                $DateTime = $dataRows['datetime'];
+                $PostTitle = $dataRows['title'];
+                $category = $dataRows['category'];
+                $Admin = $dataRows['author'];
+                $Image = $dataRows['image'];
+                $PostDescription = $dataRows['post'];
 
-            ?>
+                ?>
 
             <div class="card">
                 <img src="upload/<?php echo htmlentities($Image);?>" style="max-height: 450px; " class="img-fluid card-img-top">
