@@ -65,7 +65,7 @@ if(isset($_POST['Submit'])){
     <link rel="stylesheet/less" type="text/css" href="css/style.css" />
     <script src="https://kit.fontawesome.com/4966d9d9f9.js"></script>
 
-    <title>Categories</title>
+    <title>Add New Posts</title>
 </head>
 <body>
 <!--navbar-->

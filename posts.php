@@ -102,7 +102,9 @@ require_once 'includes/sessions.php';
 <section class="container py-2 mb-4">
     <div class="row">
         <div class="col-lg-12">
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="thead-dark">
+
                 <tr>
                     <th>#</th>
                     <th>Title</th>
@@ -114,8 +116,11 @@ require_once 'includes/sessions.php';
                     <th>Action</th>
                     <th>Live Preview</th>
                 </tr>
+                </thead>
+
 
                 <?php
+                $sr = 0;
 
                 $sql = "SELECT * FROM posts";
                 $stmt = $connectingDB->query($sql);
@@ -128,26 +133,31 @@ require_once 'includes/sessions.php';
                     $Admin = $dataRows['author'];
                     $Image = $dataRows['image'];
                     $PostText = $dataRows['post'];
+                    $sr++;
 
 
                 ?>
-
+            <tbody>
                 <tr>
-                    <td>#</td>
+                    <td><?php echo $sr;  ?></td>
                     <td><?php echo $PostTitle; ?></td>
                     <td><?php echo $Category; ?></td>
                     <td><?php echo $dateTime; ?></td>
                     <td><?php echo $Admin; ?></td>
-                    <td><?php echo $Image; ?></td>
+                    <td><img src="upload/<?php echo $Image; ?>" width="170px; height=50px;"</td>
                     <td>Comments</td>
-                    <td>Action</td>
-                    <td>Live preview</td>
+                    <td>
+                        <a href=""><span class="btn btn-warning">Edit</span></a>
+                        <a href=""><span class="btn btn-danger">Delete</span></a>
 
-
+                    </td>
+                    <td>
+                        <a href=""><span class="btn btn-primary">Live preview</span></a>
+                    </td>
 
                 </tr>
+            </tbody>
                 <?php } ?>
-
 
 
             </table>
