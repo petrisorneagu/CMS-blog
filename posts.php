@@ -140,19 +140,20 @@ require_once 'includes/sessions.php';
             <tbody>
                 <tr>
                     <td><?php echo $sr;  ?></td>
-                    <td><?php echo $PostTitle; ?></td>
-                    <td><?php echo $Category; ?></td>
-                    <td><?php echo $dateTime; ?></td>
-                    <td><?php echo $Admin; ?></td>
-                    <td><img src="upload/<?php echo $Image; ?>" width="170px; height=50px;"</td>
+                    <td>
+                        <?php if(strlen($PostTitle) > 15){ $PostTitle = substr($PostTitle,0,13);}  echo $PostTitle . '...'; ?></td>
+                    <td><?php if(strlen($Category) > 8){ $Category = substr($Category,0,8);}  echo $Category . '...'; ?></td>
+                    <td><?php if(strlen($dateTime) > 11){ $dateTime = substr($dateTime,0,9);}  echo $dateTime . '...'; ?></td>
+                    <td><?php if(strlen($Admin) > 6){ $Admin = substr($Admin,0,6);}  echo $Admin . '...'; ?></td>
+                    <td><img src="upload/<?php echo $Image; ?>" width="170px;" height="50px;"</td>
                     <td>Comments</td>
                     <td>
-                        <a href=""><span class="btn btn-warning">Edit</span></a>
-                        <a href=""><span class="btn btn-danger">Delete</span></a>
+                        <a href="#"><span class="btn btn-warning">Edit</span></a>
+                        <a href="#"><span class="btn btn-danger">Delete</span></a>
 
                     </td>
                     <td>
-                        <a href=""><span class="btn btn-primary">Live preview</span></a>
+                        <a href="#"><span class="btn btn-primary">Live preview</span></a>
                     </td>
 
                 </tr>
