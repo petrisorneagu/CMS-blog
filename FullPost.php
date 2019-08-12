@@ -69,9 +69,9 @@ require_once 'includes/sessions.php';
             <h1 class="lead">Blog titles</h1>
 
             <?php
+
             //            sql query when search button active
-            echo  ErrorMessage();
-            echo  SuccessMessage();
+
 
             if(isset($_GET['SearchButton'])){
                 $Search =  $_GET['Search'];
@@ -89,7 +89,12 @@ require_once 'includes/sessions.php';
 
             }else {
 //                default query without search
-                $sql = "SELECT * FROM posts ORDER BY id DESC";
+                $PostIdFromUrl = $_GET['id'];
+                if( !isset($PostIdFromUrl )){
+                    $_SESSION['ErrorMessage'] = 'Bad request!';
+                    Redirect_to('Blog.php');
+                }
+                $sql = "SELECT * FROM posts WHERE id = '$PostIdFromUrl'";
                 $stmt = $connectingDB->query($sql);
             }
             while($dataRows = $stmt->fetch()){
@@ -112,12 +117,9 @@ require_once 'includes/sessions.php';
                         <small class="text-muted">Written by <?php echo htmlentities($Admin) ;?> on <?php echo htmlentities($DateTime) ;?></small>
                         <span style="float: right;" class="badge badge-dark text-light">Comments 20</span>
                         <hr>
-                        <p class="card-text"> <?php if(strlen($PostDescription) > 150){
-                                echo substr($PostDescription, 0, 150) . '...';
-                            }?>
+                        <p class="card-text"> <?php echo htmlentities($PostDescription);  ?>
                         </p>
 
-                    <a href="FullPost.php?id=<?= $PostId; ?>" style="float: right"><span class="btn btn-info">Read more >> </span></a>
                 </div>
             </div>
 
