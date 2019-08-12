@@ -2,6 +2,9 @@
 require_once 'includes/DB.php';
 require_once 'includes/functions.php';
 require_once 'includes/sessions.php';
+
+$SearchQueryParameter = $_GET['id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -119,11 +122,49 @@ require_once 'includes/sessions.php';
                         <hr>
                         <p class="card-text"> <?php echo htmlentities($PostDescription);  ?>
                         </p>
-
                 </div>
             </div>
 
             <?php } ?>
+
+            <div class="">
+                <form action="FullPost.php?id=<?= $SearchQueryParameter;?>" method="post">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="FieldInfo">Share your thoughts about this post</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                    </div>
+                                    <input class="form-control"  type="text" name="CommenterName" placeholder="name">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                    </div>
+                                    <input class="form-control"  type="email" name="CommenterEmail" placeholder="email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <textarea name="CommenterThoughts" class="form-control"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" name="Submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
         </div>
         <div class="col-sm-4" style="background-color: yellow">
