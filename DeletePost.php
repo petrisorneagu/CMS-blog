@@ -8,6 +8,17 @@ $currentTime = time();
 $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
 $SearchQueryParameter = $_GET['id'];
 
+global $connectingDB;
+$sql = "SELECT * FROM posts WHERE id = '$SearchQueryParameter'";
+$stmt = $connectingDB->query($sql);
+
+while ($dataRows = $stmt->fetch()){
+    $TitleToBeDeleted = $dataRows['title'];
+    $CategoryToBeDeleted = $dataRows['category'];
+    $ImageToBeDeleted = $dataRows['image'];
+    $PostToBeDeleted = $dataRows['post'];
+}
+
 if(isset($_POST['Submit'])){
 //        delete query
     global $connectingDB;
@@ -17,6 +28,9 @@ if(isset($_POST['Submit'])){
     $execute = $connectingDB->query($sql);
 
     if($execute){
+        $target_path_to_delete_image = 'upload/'.$ImageToBeDeleted ;
+        unlink($target_path_to_delete_image);
+
         $_SESSION['SuccessMessage'] = 'Post deleted successfully';
         Redirect_to('posts.php');
     }else{
@@ -104,18 +118,6 @@ if(isset($_POST['Submit'])){
             <?php
             echo  ErrorMessage();
             echo  SuccessMessage();
-
-            global $connectingDB;
-            $sql = "SELECT * FROM posts WHERE id = '$SearchQueryParameter'";
-            $stmt = $connectingDB->query($sql);
-
-            while ($dataRows = $stmt->fetch()){
-                $TitleToBeUpdated = $dataRows['title'];
-                $CategoryToBeUpdated = $dataRows['category'];
-                $ImageToBeUpdated = $dataRows['image'];
-                $PostToBeUpdated = $dataRows['post'];
-            }
-
             ?>
 
             <form action="DeletePost.php?id=<?= $SearchQueryParameter;?>" method="post" enctype="multipart/form-data">
@@ -124,22 +126,22 @@ if(isset($_POST['Submit'])){
                     <div class="card-body bg-dark">
                         <div class="form-group">
                             <label for="title"><span class="FieldInfo">Post title: </span></label>
-                            <input disabled type="text" class="form-control" name="postTitle" id="title" placeholder="Type title here" value="<?php echo $TitleToBeUpdated;?>">
+                            <input disabled type="text" class="form-control" name="postTitle" id="title" placeholder="Type title here" value="<?php echo $TitleToBeDeleted;?>">
                         </div>
                         <div class="form-group">
                             <span class="FieldInfo">Existing category: </span>
-                            <?php echo $CategoryToBeUpdated;?>
+                            <?php echo $CategoryToBeDeleted;?>
                             <br>
                         </div>
 
                         <div class="form-group">
                             <span class="FieldInfo">Existing image:</span>
-                            <img class="mb-1" src="upload/<?php echo $ImageToBeUpdated;?>" width="170px" height="70px">
+                            <img class="mb-1" src="upload/<?php echo $ImageToBeDeleted;?>" width="170px" height="70px">
                         </div>
 
                         <div class="form-group">
                             <label for="Post"><span class="FieldInfo">Post: </span></label>
-                            <textarea disabled class="form-control" name="PostDescription" id="Post" cols="30" rows="10" ><?= $PostToBeUpdated;?></textarea>
+                            <textarea disabled class="form-control" name="PostDescription" id="Post" cols="30" rows="10" ><?= $PostToBeDeleted;?></textarea>
                         </div>
 
                         <div class="row">
