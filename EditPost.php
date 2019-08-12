@@ -6,6 +6,7 @@ require_once 'includes/sessions.php';
 
 $currentTime = time();
 $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
+$SearchQueryParameter = $_GET['id'];
 
 if(isset($_POST['Submit'])){
     $postTitle = $_POST['postTitle'];
@@ -25,30 +26,38 @@ if(isset($_POST['Submit'])){
         $_SESSION['ErrorMessage'] = 'Post title must be greater than 5 characters';
         Redirect_to('addNewPosts.php');
     }
-    elseif(strlen($postTitle) > 999 ) {
-        $_SESSION['ErrorMessage'] = 'Post title should not exceed more than 1000 characters';
+    elseif(strlen($postTitle) > 9999 ) {
+        $_SESSION['ErrorMessage'] = 'Post title should not exceed more than 10000 characters';
         Redirect_to('addNewPosts.php');
     }else{
-//        insert data into database
-        $sql = "INSERT INTO posts (datetime, title, category, author, image, post)";
-        $sql .= "VALUES (:datetime, :postTitle, :category, :admin, :image, :PostDescription)"; //dummy values
-        $stmt = $connectingDB->prepare($sql);
+//        update query
+        global $connectingDB;
 
-        $stmt->bindValue(':datetime', $dateTime);
-        $stmt->bindValue(':postTitle', $postTitle);
-        $stmt->bindValue(':category', $category);
-        $stmt->bindValue(':admin', $Admin);
-        $stmt->bindValue(':image', $image);
-        $stmt->bindValue(':PostDescription', $postText);
+//            don't update the image with null, unless if is uploaded anew one
+        if(!empty($image)){
+            $sql = "UPDATE posts 
+                SET title = '$postTitle', category = '$category', image = '$image', post = '$postText'
+                WHERE id = '$SearchQueryParameter'";
+        }else{
+            $sql = "UPDATE posts 
+                SET title = '$postTitle', category = '$category', post = '$postText'
+                WHERE id = '$SearchQueryParameter'";
+        }
 
-        $execute=$stmt->execute();
+
+
+        $execute = $connectingDB->query($sql);
+
+
+
+
         move_uploaded_file($_FILES['image']['tmp_name'], $target);
         if($execute){
-            $_SESSION['SuccessMessage'] = 'Post with id: '.$connectingDB->lastInsertId().' was added successfully';
-            Redirect_to('addNewPosts.php');
+            $_SESSION['SuccessMessage'] = 'Post updated successfully';
+            Redirect_to('posts.php');
         }else{
             $_SESSION['ErrorMessage'] = 'Something went wrong';
-            Redirect_to('addNewPosts.php');
+            Redirect_to('posts.php');
         }
     }
 }
@@ -135,7 +144,6 @@ if(isset($_POST['Submit'])){
             echo  SuccessMessage();
 
             global $connectingDB;
-            $SearchQueryParameter = $_GET['id'];
             $sql = "SELECT * FROM posts WHERE id = '$SearchQueryParameter'";
             $stmt = $connectingDB->query($sql);
 
@@ -148,7 +156,7 @@ if(isset($_POST['Submit'])){
 
             ?>
 
-            <form action="addNewPosts.php" method="post" enctype="multipart/form-data">
+            <form action="EditPost.php?id=<?= $SearchQueryParameter;?>" method="post" enctype="multipart/form-data">
                 <div class="card">
 
                     <div class="card-body bg-dark">

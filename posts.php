@@ -102,6 +102,10 @@ require_once 'includes/sessions.php';
 <section class="container py-2 mb-4">
     <div class="row">
         <div class="col-lg-12">
+            <?php
+            echo  ErrorMessage();
+            echo  SuccessMessage();
+            ?>
             <table class="table table-striped table-hover table-bordered">
                 <thead class="thead-dark">
 
