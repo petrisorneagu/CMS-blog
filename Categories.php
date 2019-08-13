@@ -24,6 +24,7 @@ if(isset($_POST['Submit'])){
         Redirect_to('Categories.php');
     }else{
 //        insert data into database
+        global $connectingDB;   
         $sql = "INSERT INTO category (title, author, datetime)";
         $sql .= "VALUES (:categoryName, :adminName, :dateTime)";
         $stmt = $connectingDB->prepare($sql);

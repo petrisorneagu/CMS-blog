@@ -25,6 +25,10 @@ if(isset($_POST['Submit'])){
     elseif($Password !== $ConfirmPassword) {
         $_SESSION['ErrorMessage'] = 'The password and confirmed password should match.';
         Redirect_to('Admins.php');
+        }
+    elseif(checkUsernameExistsOrNot($Username)) {
+        $_SESSION['ErrorMessage'] = 'The username already exists. Try another one.';
+        Redirect_to('Admins.php');
     }else{
 //        insert new admin into database
 //        TODO - secure login & pass hash
