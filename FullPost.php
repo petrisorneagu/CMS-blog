@@ -5,6 +5,49 @@ require_once 'includes/sessions.php';
 
 $SearchQueryParameter = $_GET['id'];
 
+
+if(isset($_POST['Submit'])){
+    $name = $_POST['CommenterName'];
+    $email = $_POST['CommenterEmail'];
+    $comment = $_POST['CommenterThoughts'];
+    $currentTime = time();
+    $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
+
+
+    if(empty($name) || empty($email) || empty($comment)){
+        $_SESSION['ErrorMessage'] = 'You must fill all fields';
+        Redirect_to("FullPost.php?id=$SearchQueryParameter");
+    } elseif(strlen($comment) > 500) {
+        $_SESSION['ErrorMessage'] = 'Comment length should be less than 500 characters';
+        Redirect_to("FullPost.php?id=$SearchQueryParameter");
+    } else {
+        global $connectingDB;
+//        insert data into database
+        $sql = "INSERT INTO comments (datetime, name, email, comment)";
+        $sql .= "VALUES (:datetime, :name, :email, :comment)";
+        $stmt = $connectingDB->prepare($sql);
+
+        $stmt->bindValue(':datetime', $dateTime);
+        $stmt->bindValue(':name', $name);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':comment', $comment);
+
+        $execute = $stmt->execute();
+//        var_dump($execute);
+
+        if($execute){
+            $_SESSION['SuccessMessage'] = 'Comment submitted successfully';
+            Redirect_to("FullPost.php?id=$SearchQueryParameter");
+        }else{
+            $_SESSION['ErrorMessage'] = 'Something went wrong. Try again!';
+            Redirect_to("FullPost.php?id=$SearchQueryParameter");
+        }
+    }
+}
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +86,7 @@ $SearchQueryParameter = $_GET['id'];
                     <a href="Blog.php" class="nav-link">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#$" class="nav-link">Contact us</a>
+                    <a href="#" class="nav-link">Contact us</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Features</a>
@@ -72,9 +115,10 @@ $SearchQueryParameter = $_GET['id'];
             <h1 class="lead">Blog titles</h1>
 
             <?php
+            echo  ErrorMessage();
+            echo  SuccessMessage();
 
-            //            sql query when search button active
-
+ //            sql query when search button active
 
             if(isset($_GET['SearchButton'])){
                 $Search =  $_GET['Search'];
