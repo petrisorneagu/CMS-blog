@@ -23,14 +23,15 @@ if(isset($_POST['Submit'])){
     } else {
         global $connectingDB;
 //        insert data into database
-        $sql = "INSERT INTO comments (datetime, name, email, comment)";
-        $sql .= "VALUES (:datetime, :name, :email, :comment)";
+        $sql = "INSERT INTO comments (datetime, name, email, comment, approvedby, status, post_id)";
+        $sql .= "VALUES (:datetime, :name, :email, :comment, 'Pending', 'OFF', :postIdFromURL)";
         $stmt = $connectingDB->prepare($sql);
 
         $stmt->bindValue(':datetime', $dateTime);
         $stmt->bindValue(':name', $name);
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':comment', $comment);
+        $stmt ->bindValue(':postIdFromURL',$SearchQueryParameter);
 
         $execute = $stmt->execute();
 //        var_dump($execute);
