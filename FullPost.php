@@ -120,6 +120,7 @@ if(isset($_POST['Submit'])){
             echo  SuccessMessage();
 
  //            sql query when search button active
+            global $connectingDB;
 
             if(isset($_GET['SearchButton'])){
                 $Search =  $_GET['Search'];
@@ -170,6 +171,35 @@ if(isset($_POST['Submit'])){
                 </div>
             </div>
 
+            <?php } ?>
+
+            <!--            fetching comments-->
+            <span class="FieldInfo">Comments</span>
+            <br>
+            <br>
+
+            <?php
+            global $connectingDB;
+            $sql = "SELECT * FROM comments WHERE post_id = '$SearchQueryParameter' AND status = 'ON'";
+            $stmt = $connectingDB->query($sql);
+
+            while($dataRows = $stmt->fetch()){
+                $commentDate = $dataRows['datetime'];
+                $commentName = $dataRows['name'];
+                $commentContent = $dataRows['comment'];
+                ?>
+
+                <div>
+                    <div class="media CommentBlock">
+                        <img src="images/user.png" class="d-block img-fluid align-self-start">
+                        <div class="media-body ml-2">
+                            <h6 class="lead"><?= $commentName; ?></h6>
+                            <p class="small"><?= $commentDate;?></p>
+                            <p><?= $commentContent; ?></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
             <?php } ?>
 
             <div class="">
