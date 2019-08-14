@@ -12,7 +12,7 @@ if(isset($_POST['Submit'])){
     $Name = $_POST['Name'];
     $Password = $_POST['Password'];
     $ConfirmPassword = $_POST['ConfirmPassword'];
-    $Admin = 'admin';
+    $Admin = $_SESSION['AdminName'];
 
     if(empty($Username) || empty($Password) || empty($ConfirmPassword)){
         $_SESSION['ErrorMessage'] = 'You must fill all fields';

@@ -13,9 +13,9 @@ if(isset($_POST['Submit'])){
     $image = $_FILES['image']['name'];
     $postText = $_POST['PostDescription'];
 
+    $Admin = $_SESSION['AdminName'];
 //    upload image dir
     $target = 'upload/' . basename($_FILES['image']['name']);
-    $Admin = 'admin';
 
     if(empty($postTitle)){
         $_SESSION['ErrorMessage'] = 'Fill in post title';

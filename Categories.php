@@ -9,7 +9,7 @@ $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
 
 if(isset($_POST['Submit'])){
     $category = $_POST['categoryTitle'];
-    $Admin = 'admin';
+    $Admin = $_SESSION['AdminName'];
 
     if(empty($category)){
         $_SESSION['ErrorMessage'] = 'You must fill all fields';
@@ -24,7 +24,7 @@ if(isset($_POST['Submit'])){
         Redirect_to('Categories.php');
     }else{
 //        insert data into database
-        global $connectingDB;   
+        global $connectingDB;
         $sql = "INSERT INTO category (title, author, datetime)";
         $sql .= "VALUES (:categoryName, :adminName, :dateTime)";
         $stmt = $connectingDB->prepare($sql);

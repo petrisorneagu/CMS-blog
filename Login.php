@@ -12,14 +12,14 @@ if(isset($_POST['Submit'])){
         Redirect_to('Login.php');
     } else {
        $loggedIn =  Login_Attempt($Username, $Password);
-       if($loggedIn ){
+       if($loggedIn){
 //           save credentials for the user session
            $_SESSION['UserId'] = $loggedIn['id'];
            $_SESSION['UserName'] = $loggedIn['username'];
            $_SESSION['AdminName'] = $loggedIn['aname'];
            $_SESSION['SuccessMessage'] = 'Welcome '.$_SESSION['AdminName'];
 
-           Redirect_to('Login.php');
+           Redirect_to('Dashboard.php');
        }
         $_SESSION['ErrorMessage'] = 'Incorrect username/password';
         Redirect_to('Login.php');
