@@ -4,6 +4,8 @@ require_once 'includes/DB.php';
 require_once 'includes/functions.php';
 require_once 'includes/sessions.php';
 
+confirm_Login();
+
 $currentTime = time();
 $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
 $SearchQueryParameter = $_GET['id'];

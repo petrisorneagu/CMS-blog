@@ -58,3 +58,11 @@ function Login_Attempt($Username, $Password){
 
     }
 }
+//for password protected pages
+function confirm_Login(){
+    if(isset($_SESSION['UserId'])){
+        return true;
+    }
+    $_SESSION['ErrorMessage'] = 'Login required !';
+    Redirect_to('Login.php');
+}

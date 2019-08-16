@@ -2,6 +2,8 @@
 require_once 'includes/DB.php';
 require_once 'includes/functions.php';
 require_once 'includes/sessions.php';
+
+confirm_Login();
 ?>
 
 <!DOCTYPE html>
