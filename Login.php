@@ -19,6 +19,12 @@ if(isset($_POST['Submit'])){
            $_SESSION['AdminName'] = $loggedIn['aname'];
            $_SESSION['SuccessMessage'] = 'Welcome '.$_SESSION['AdminName'];
 
+           if(isset($_SESSION['TrackingURL'])){
+               Redirect_to($_SESSION['TrackingURL']);
+           }else{
+               Redirect_to('dashboard.php');
+           }
+
            Redirect_to('Dashboard.php');
        }
         $_SESSION['ErrorMessage'] = 'Incorrect username/password';

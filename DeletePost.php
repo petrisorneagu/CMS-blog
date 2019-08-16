@@ -34,10 +34,10 @@ if(isset($_POST['Submit'])){
         unlink($target_path_to_delete_image);
 
         $_SESSION['SuccessMessage'] = 'Post deleted successfully';
-        Redirect_to('posts.php');
+        Redirect_to('Posts.php');
     }else{
         $_SESSION['ErrorMessage'] = 'Something went wrong';
-        Redirect_to('posts.php');
+        Redirect_to('Posts.php');
     }
 }
 

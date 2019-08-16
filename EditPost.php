@@ -56,10 +56,10 @@ if(isset($_POST['Submit'])){
         move_uploaded_file($_FILES['image']['tmp_name'], $target);
         if($execute){
             $_SESSION['SuccessMessage'] = 'Post updated successfully';
-            Redirect_to('posts.php');
+            Redirect_to('Posts.php');
         }else{
             $_SESSION['ErrorMessage'] = 'Something went wrong';
-            Redirect_to('posts.php');
+            Redirect_to('Posts.php');
         }
     }
 }

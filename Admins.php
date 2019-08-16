@@ -3,6 +3,8 @@
 require_once 'includes/DB.php';
 require_once 'includes/functions.php';
 require_once 'includes/sessions.php';
+$_SESSION['TrackingURL'] = $_SERVER['PHP_SELF'];
+
 
 confirm_Login();
 
