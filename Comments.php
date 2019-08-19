@@ -134,6 +134,59 @@ confirm_Login();
                 <?php }  ?>
             </table>
 
+            <h2>Approved comments</h2>
+            <?php
+            echo  ErrorMessage();
+            echo  SuccessMessage();
+            ?>
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>No.</th>
+                    <th>Date&Time</th>
+                    <th>Name</th>
+                    <th>Comment</th>
+                    <th>Revert</th>
+                    <th>Action</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+
+                <?php
+                global $connectingDB;
+                $sql = "SELECT * FROM comments WHERE status = 'ON' ORDER BY id DESC";
+                $execute = $connectingDB->query($sql);
+                $SrNo = 0;
+
+                while($dataRows = $execute->fetch()){
+                    $CommentId = $dataRows['id'];
+                    $DateTimeOfComment = $dataRows['datetime'];
+                    $CommenterName = $dataRows['name'];
+                    $CommentContent = $dataRows['comment'];
+                    $CommentPostId = $dataRows['post_id'];
+                    $SrNo++;
+
+                    ?>
+
+                    <tbody>
+                    <tr>
+                        <td><?= htmlentities($SrNo);?></td>
+                        <td><?= htmlentities($DateTimeOfComment); ?></td>
+                        <td><?= htmlentities($CommenterName); ?></td>
+                        <td><?= htmlentities($CommentContent); ?></td>
+                        <td><a href="DisapproveComments.php?id=<?= $CommentId;?>" class="btn btn-warning">Disapprove</a></td>
+                        <td><a href="DeleteComments.php?id=<?= $CommentId;?>" class="btn btn-danger">Delete</a></td>
+                        <td><a class="btn btn-primary" href="FullPost.php?id=<?= $CommentPostId;?>" target="_blank">Preview</a></td>
+
+                    </tr>
+
+                    </tbody>
+                <?php }  ?>
+            </table>
+
+
+
+
         </div>
     </div>
 </section>
