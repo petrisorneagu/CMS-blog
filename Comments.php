@@ -85,6 +85,10 @@ confirm_Login();
         <div class="col-lg-12" style="min-height: 400px">
 
             <h2>Un-Approved comments</h2>
+            <?php
+            echo  ErrorMessage();
+            echo  SuccessMessage();
+            ?>
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -120,8 +124,8 @@ confirm_Login();
                         <td><?= htmlentities($DateTimeOfComment); ?></td>
                         <td><?= htmlentities($CommenterName); ?></td>
                         <td><?= htmlentities($CommentContent); ?></td>
-                        <td><a href="ApproveComment.php?id=<?= $CommentPostId;?>" class="btn btn-success">Approve</a></td>
-                        <td><a href="DeleteComment.php?id=<?= $CommentPostId;?>" class="btn btn-danger">Delete</a></td>
+                        <td><a href="ApproveComments.php?id=<?= $CommentId;?>" class="btn btn-success">Approve</a></td>
+                        <td><a href="DeleteComments.php?id=<?= $CommentId;?>" class="btn btn-danger">Delete</a></td>
                         <td><a class="btn btn-primary" href="FullPost.php?id=<?= $CommentPostId;?>" target="_blank">Preview</a></td>
 
                     </tr>
