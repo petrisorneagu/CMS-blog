@@ -181,6 +181,55 @@ if(isset($_POST['Submit'])){
                 </div>
             </form>
 
+            <h2>Existing admins</h2>
+            <?php
+            echo  ErrorMessage();
+            echo  SuccessMessage();
+            ?>
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>No.</th>
+                    <th>Date&Time of addition</th>
+                    <th>Username</th>
+                    <th>Admin name</th>
+                    <th>Added by</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <?php
+                global $connectingDB;
+                $sql = "SELECT * FROM admins  ORDER BY id DESC";
+                $execute = $connectingDB->query($sql);
+                $SrNo = 0;
+
+                while($dataRows = $execute->fetch()){
+                    $AdminId = $dataRows['id'];
+                    $DateTime = $dataRows['datetime'];
+                    $AdminUsername = $dataRows['username'];
+                    $AdminName = $dataRows['aname'];
+                    $AddedBy = $dataRows['addedby'];
+                    $SrNo++;
+
+                    ?>
+
+                    <tbody>
+                    <tr>
+                        <td><?= htmlentities($SrNo);?></td>
+                        <td><?= htmlentities($DateTime); ?></td>
+                        <td><?= htmlentities($AdminUsername); ?></td>
+                        <td><?= htmlentities($AdminName); ?></td>
+                        <td><?= htmlentities($AddedBy); ?></td>
+                        <td><a href="DeleteAdmin.php?id=<?= $AdminId;?>" class="btn btn-danger">Delete</a></td>
+
+                    </tr>
+
+                    </tbody>
+                <?php }  ?>
+            </table>
+
+
         </div>
     </div>
 
