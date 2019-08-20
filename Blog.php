@@ -70,6 +70,7 @@ require_once 'includes/sessions.php';
 
             <?php
             //            sql query when search button active
+            global $connectingDB;
             echo  ErrorMessage();
             echo  SuccessMessage();
 
@@ -87,6 +88,20 @@ require_once 'includes/sessions.php';
                 $stmt->execute();
 //                debug($stmt);
 
+            }  //query when pagination is active ex.: Blog.php?page=2
+            elseif(isset($_GET['page'])){
+                $page =  $_GET['page'];
+
+                if($page <= 1){
+                    $showPostsFrom = 0;
+                }else {
+                    $showPostsFrom = ($page * 4) - 4;
+                }
+
+                $sql = "SELECT * FROM posts ORDER BY id ASC LIMIT {$showPostsFrom},4";
+                $stmt = $connectingDB->query($sql);
+
+
             }else {
 //                default query without search
                 $sql = "SELECT * FROM posts ORDER BY id DESC";
@@ -103,23 +118,27 @@ require_once 'includes/sessions.php';
 
                 ?>
 
-            <div class="card">
-                <img src="upload/<?php echo htmlentities($Image);?>" style="max-height: 450px; " class="img-fluid card-img-top">
+                <div class="card">
+                    <img src="upload/<?php echo htmlentities($Image);?>" style="max-height: 450px; " class="img-fluid card-img-top">
 
-                <div class="card-body">
-                    <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
+                    <div class="card-body">
+                        <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
 
-                        <small class="text-muted">Written by <?php echo htmlentities($Admin) ;?> on <?php echo htmlentities($DateTime) ;?></small>
-                        <span style="float: right;" class="badge badge-dark text-light">Comments 20</span>
+                        <small class="text-muted">Category: <span class="text-dark"><?= htmlentities($category);?> - </span> Written by <span class="text-dark"><?php echo htmlentities($Admin) ;?></span> on <?php echo htmlentities($DateTime) ;?></small>
+                        <span style="float: right;" class="badge badge-dark text-light">Comments
+                            <?php
+                            echo  ApproveCommentsAcordingToPost($PostId);
+                            ?>
+                        </span>
                         <hr>
                         <p class="card-text"> <?php if(strlen($PostDescription) > 150){
                                 echo substr($PostDescription, 0, 150) . '...';
                             }?>
                         </p>
 
-                    <a href="FullPost.php?id=<?= $PostId; ?>" style="float: right"><span class="btn btn-info">Read more >> </span></a>
+                        <a href="FullPost.php?id=<?= $PostId; ?>" style="float: right"><span class="btn btn-info">Read more >> </span></a>
+                    </div>
                 </div>
-            </div>
 
             <?php } ?>
 

@@ -162,9 +162,12 @@ if(isset($_POST['Submit'])){
 
                 <div class="card-body">
                     <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
-
-                        <small class="text-muted">Written by <?php echo htmlentities($Admin) ;?> on <?php echo htmlentities($DateTime) ;?></small>
-                        <span style="float: right;" class="badge badge-dark text-light">Comments 20</span>
+                    <small class="text-muted">Category: <span class="text-dark"><?= htmlentities($category);?> - </span> Written by <span class="text-dark"><?php echo htmlentities($Admin) ;?></span> on <?php echo htmlentities($DateTime) ;?></small>
+                        <span style="float: right;" class="badge badge-dark text-light">Comments
+                             <?php
+                             echo  ApproveCommentsAcordingToPost($PostId);
+                             ?>
+                        </span>
                         <hr>
                         <p class="card-text"> <?php echo htmlentities($PostDescription);  ?>
                         </p>
