@@ -13,7 +13,7 @@ require_once 'includes/sessions.php';
     <link rel="stylesheet/less" type="text/css" href="css/style.css" />
     <script src="https://kit.fontawesome.com/4966d9d9f9.js"></script>
 
-    <title>Blog page</title>
+    <title>Blog</title>
 </head>
 <body>
 <!--navbar-->
@@ -104,7 +104,7 @@ require_once 'includes/sessions.php';
 
             }else {
 //                default query without search
-                $sql = "SELECT * FROM posts ORDER BY id DESC";
+                $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 0, 4";
                 $stmt = $connectingDB->query($sql);
             }
             while($dataRows = $stmt->fetch()){
@@ -142,6 +142,60 @@ require_once 'includes/sessions.php';
 
             <?php } ?>
 
+            <!--            Pagination-->
+            <nav>
+                <ul class="pagination pagination-lg">
+                    <?php
+                    if(isset($page)){
+//                          show backward button ..except for the first page
+                        if($page>1){
+                            ?>
+
+                            <li class="page-item">
+                                <a href="Blog.php?page=<?= $page-1;?>" class="page-link">&laquo;</a>
+                            </li>
+
+                        <?php } } ?>
+
+                    <?php
+                    global $connectingDB;
+                    $sql ="SELECT COUNT(*) FROM posts";
+                    $stmt = $connectingDB->query($sql);
+                    $rowPagination = $stmt->fetch();
+                    $totalPosts = array_shift($rowPagination);
+                    //                    echo $totalPosts . '<br>';
+                    $postPagination = ceil($totalPosts/4);
+//                                        echo $postPagination;
+
+
+
+                    for($i=1; $i <= $postPagination; $i++){
+                        $page = $_GET['page'];
+//                        if(isset($_GET['page'])) {
+//                        }
+                        ?>
+                        <li class="page-item <?php if($i == $page){echo 'active';}{echo '';} ?>">
+                            <a href="Blog.php?page=<?= $i;?>" class="page-link"><?= $i;?></a>
+                        </li>
+
+                    <?php }
+                    //                    }  ?>
+
+                    <?php
+                    if(isset($page)){
+//                          show forward button ..except for the last page
+                        if($page+1 <= $postPagination){
+
+                            ?>
+
+                            <li class="page-item">
+                                <a href="Blog.php?page=<?= $page+1;?>" class="page-link">&raquo;</a>
+                            </li>
+
+                        <?php } } ?>
+
+                </ul>
+            </nav>
         </div>
         <div class="col-sm-4" style="background-color: yellow">
 
