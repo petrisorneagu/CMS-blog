@@ -170,19 +170,20 @@ require_once 'includes/sessions.php';
 
 
                     for($i=1; $i <= $postPagination; $i++){
-                        $page = $_GET['page'];
-//                        if(isset($_GET['page'])) {
-//                        }
+
+                        if(isset($_GET['page'])) {
+                            $page = $_GET['page'];
+
                         ?>
                         <li class="page-item <?php if($i == $page){echo 'active';}{echo '';} ?>">
                             <a href="Blog.php?page=<?= $i;?>" class="page-link"><?= $i;?></a>
                         </li>
 
-                    <?php }
+                    <?php } }
                     //                    }  ?>
 
                     <?php
-                    if(isset($page)){
+                    if(isset($page) && !empty($page)){
 //                          show forward button ..except for the last page
                         if($page+1 <= $postPagination){
 
