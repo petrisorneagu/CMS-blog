@@ -66,3 +66,19 @@ function confirm_Login(){
     $_SESSION['ErrorMessage'] = 'Login required !';
     Redirect_to('Login.php');
 }
+
+function ApproveCommentsAcordingToPost($PostId){
+    global $connectingDB;
+    $sqlApproved = "SELECT COUNT(*) FROM comments WHERE post_id = '$PostId' AND status = 'ON'";
+    $stmtApproved = $connectingDB->query($sqlApproved);
+    $totalRowsApproved = $stmtApproved->fetchColumn();
+    return $totalRowsApproved;
+}
+
+function DisApproveCommentsAcordingToPost($PostId){
+    global $connectingDB;
+    $sqlDisApproved = "SELECT COUNT(*) FROM comments WHERE post_id = '$PostId' AND status = 'OFF'";
+    $stmtDisApproved = $connectingDB->query($sqlDisApproved );
+    $totalRowsDisApproved = $stmtDisApproved ->fetchColumn();
+    return $totalRowsDisApproved;
+}

@@ -154,14 +154,25 @@ confirm_Login();
                     <td><?php if(strlen($dateTime) > 11){ $dateTime = substr($dateTime,0,9);}  echo $dateTime . '...'; ?></td>
                     <td><?php if(strlen($Admin) > 6){ $Admin = substr($Admin,0,6);}  echo $Admin . '...'; ?></td>
                     <td><img src="upload/<?php echo $Image; ?>" width="170px;" height="50px;"</td>
-                    <td>Comments</td>
+                    <td><span class="badge badge-success">
+                            <?php
+                            $totalApproved = ApproveCommentsAcordingToPost($id);
+                            echo $totalApproved;
+                            ?>
+                        </span>
+                        <span class="badge badge-danger">
+                          <?php
+                          $totalDisapproved = DisApproveCommentsAcordingToPost($id  );
+                          echo $totalDisapproved;
+                          ?></span>
+                    </td>
                     <td>
                         <a href="EditPost.php?id=<?= $id;?>"><span class="btn btn-warning">Edit</span></a>
                         <a href="DeletePost.php?id=<?= $id;?>"><span class="btn btn-danger">Delete</span></a>
 
                     </td>
                     <td>
-                        <a href="FullPost.php?id=<?= $id;?>" target="_blank"><span class="btn btn-primary">Live preview</span></a>
+                        <a href="FullPost.php?id=<?= $id;?>"><span class="btn btn-primary">Live preview</span></a>
                     </td>
 
                 </tr>

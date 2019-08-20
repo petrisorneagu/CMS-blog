@@ -181,6 +181,61 @@ confirm_Login();
         </div>
 
         <!--        main area-->
+        <div class="col-lg-10">
+            <h1>Top posts</h1>
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>No.</th>
+                    <th>Title</th>
+                    <th>Date&Time</th>
+                    <th>Author</th>
+                    <th>Comments<br><small>appr</small><small> unappr</small></th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+
+                <?php
+                global $connectingDB;
+                $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 0,5";
+                $stmt = $connectingDB->query($sql);
+                $SrNo = 0;
+
+                while($dataRows = $stmt->fetch()){
+                    $PostId = $dataRows['id'];
+                    $Title = $dataRows['title'];
+                    $DateTime = $dataRows['datetime'];
+                    $Author = $dataRows['author'];
+                    $SrNo++;
+
+
+               ?>
+
+                <tbody>
+                <tr>
+                    <td><?= $SrNo;?></td>
+                    <td><?= $Title;?></td>
+                    <td><?= $DateTime;?></td>
+                    <td><?= $Author;?></td>
+                    <td><span class="badge badge-success">
+                            <?php
+                            $totalApproved = ApproveCommentsAcordingToPost($PostId);
+                            echo $totalApproved;
+                            ?>
+                        </span>
+                        <span class="badge badge-danger">
+                          <?php
+                          $totalDisapproved = DisApproveCommentsAcordingToPost($PostId);
+                          echo $totalDisapproved;
+                          ?></span>
+                    </td>
+                    <td><a href="FullPost.php?id=<?= $PostId ;?>"><span class="btn btn-info">Preview</span></a></td>
+                </tr>
+                </tbody>
+
+                <?php } ?>
+            </table>
+        </div>
 
 
     </div>
