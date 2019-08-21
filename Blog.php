@@ -100,10 +100,18 @@ require_once 'includes/sessions.php';
 
                 $sql = "SELECT * FROM posts ORDER BY id ASC LIMIT {$showPostsFrom},4";
                 $stmt = $connectingDB->query($sql);
+            }
+//            category active in url
+            elseif(isset($_GET['category'])){
+                $category = $_GET['category'];
+                $sql = "SELECT * FROM posts WHERE category = :categoryName ORDER BY id desc ";
 
-
-            }else {
+                $stmt = $connectingDB->prepare($sql);
+                $stmt->bindValue(':categoryName', $category);
+                $stmt->execute();
+            }
 //                default query without search
+            else {
                 $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 0, 4";
                 $stmt = $connectingDB->query($sql);
             }
