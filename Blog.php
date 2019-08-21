@@ -165,7 +165,7 @@ require_once 'includes/sessions.php';
                     $totalPosts = array_shift($rowPagination);
                     //                    echo $totalPosts . '<br>';
                     $postPagination = ceil($totalPosts/4);
-//                                        echo $postPagination;
+                    //                                        echo $postPagination;
 
 
 
@@ -174,12 +174,12 @@ require_once 'includes/sessions.php';
                         if(isset($_GET['page'])) {
                             $page = $_GET['page'];
 
-                        ?>
-                        <li class="page-item <?php if($i == $page){echo 'active';}{echo '';} ?>">
-                            <a href="Blog.php?page=<?= $i;?>" class="page-link"><?= $i;?></a>
-                        </li>
+                            ?>
+                            <li class="page-item <?php if($i == $page){echo 'active';}{echo '';} ?>">
+                                <a href="Blog.php?page=<?= $i;?>" class="page-link"><?= $i;?></a>
+                            </li>
 
-                    <?php } }
+                        <?php } }
                     //                    }  ?>
 
                     <?php
@@ -198,8 +198,52 @@ require_once 'includes/sessions.php';
                 </ul>
             </nav>
         </div>
-        <div class="col-sm-4" style="background-color: yellow">
 
+        <!--        right side area-->
+        <div class="col-sm-4" >
+            <div class="card mt-4">
+                <div class="card-body">
+                    <img src="images/join_us.jpg" class="d-block img-fluid" alt="">
+                    <div class="text-center">
+                        A lot of people forget to properly formulate the purpose of their blog post or article. But if you do not properly define the aim of your text, you could be missing out on valuable opportunities. You shouldn’t write just for the sake of writing but because you have an idea of what you want your audience to know or do. Let’s discuss why defining the purpose of your text is important, plus, some great writing tips!
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="card-header bg-dark text-light">
+                <h2 class="lead">Sign Up!</h2>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-success btn-block text-center text-white">Join the forum</button>
+                <button class="btn btn-danger btn-block text-center text-white">Login</button>
+                <div class="input-group mb-3 mt-2">
+                    <input type="text" class="form-control" placeholder="Enter your email">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-sm text-center text-white" type="button" name="button">Subscribe now</button>
+                    </div
+                </div>
+            </div>
+            <br>
+            <div class="card-header bg-primary text-light">
+                <h2 class="lead">Categories</h2>
+            </div>
+
+            <div class="card-body">
+                    <?php
+                    global $connectingDB;
+                    $sql = "SELECT * FROM category ORDER BY id DESC";
+                    $stmt = $connectingDB->query($sql);
+
+                    while($dataRows = $stmt->fetch()){
+                        $categoryId = $dataRows['id'];
+                        $categoryName = $dataRows['title'];
+                        ?>
+                        <a href="Blog.php?category=<?=$categoryName;?>"><span class="heading"><?= $categoryName;?></span><br></a>
+
+                    <?php } ?>
+
+            </div>
         </div>
     </div>
 </div>
