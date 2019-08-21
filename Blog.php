@@ -232,25 +232,59 @@ require_once 'includes/sessions.php';
                     </div
                 </div>
             </div>
+
             <br>
             <div class="card-header bg-primary text-light">
                 <h2 class="lead">Categories</h2>
             </div>
 
             <div class="card-body">
+                <?php
+                global $connectingDB;
+                $sql = "SELECT * FROM category ORDER BY id DESC";
+                $stmt = $connectingDB->query($sql);
+
+                while($dataRows = $stmt->fetch()){
+                    $categoryId = $dataRows['id'];
+                    $categoryName = $dataRows['title'];
+                    ?>
+                    <a href="Blog.php?category=<?=$categoryName;?>"><span class="heading"><?= $categoryName;?></span><br></a>
+
+                <?php } ?>
+
+            </div>
+
+            <br>
+            <div class="card">
+                <div class="card-header bg-info text-light">
+                    <h2 class="lead">Recent Posts</h2>
+                </div>
+                <div class="card-body">
+
                     <?php
                     global $connectingDB;
-                    $sql = "SELECT * FROM category ORDER BY id DESC";
+                    $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 0,5";
                     $stmt = $connectingDB->query($sql);
 
                     while($dataRows = $stmt->fetch()){
-                        $categoryId = $dataRows['id'];
-                        $categoryName = $dataRows['title'];
+                        $Id = $dataRows['id'];
+                        $Title = $dataRows['title'];
+                        $DateTime = $dataRows['datetime'];
+                        $Image = $dataRows['image'];
                         ?>
-                        <a href="Blog.php?category=<?=$categoryName;?>"><span class="heading"><?= $categoryName;?></span><br></a>
 
+                        <div class="media">
+                            <img src="upload/<?= htmlentities($Image);?>" class="d-block img-fluid align-self-start local-right-area" alt="">
+                            <div class="media-body ml-2">
+                                <a href="FullPost.php?id=<?= htmlentities($Id);?>"><h6 class="lead"><?= htmlentities($Title);?></h6></a>
+                                <p class="small"><?=htmlentities($DateTime);?></p>
+                            </div>
+
+                        </div>
+                        <hr>
                     <?php } ?>
 
+                </div>
             </div>
         </div>
     </div>

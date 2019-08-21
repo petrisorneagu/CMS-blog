@@ -112,8 +112,8 @@ if(isset($_POST['Submit'])){
 <div class="container">
     <div class="row mt-4">
         <div class="col-sm-8">
-            <h1>Blog titles</h1>
-            <h1 class="lead">Blog titles</h1>
+            <h1>Full Posts</h1>
+<!--            <h1 class="lead">Blog titles</h1>-->
 
             <?php
             echo  ErrorMessage();
@@ -245,9 +245,89 @@ if(isset($_POST['Submit'])){
             </div>
 
         </div>
-        <div class="col-sm-4" style="background-color: yellow">
 
+        <div class="col-sm-4" >
+            <div class="card mt-4">
+                <div class="card-body">
+                    <img src="images/join_us.jpg" class="d-block img-fluid" alt="">
+                    <div class="text-center">
+                        A lot of people forget to properly formulate the purpose of their blog post or article. But if you do not properly define the aim of your text, you could be missing out on valuable opportunities. You shouldn’t write just for the sake of writing but because you have an idea of what you want your audience to know or do. Let’s discuss why defining the purpose of your text is important, plus, some great writing tips!
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="card-header bg-dark text-light">
+                <h2 class="lead">Sign Up!</h2>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-success btn-block text-center text-white">Join the forum</button>
+                <button class="btn btn-danger btn-block text-center text-white">Login</button>
+                <div class="input-group mb-3 mt-2">
+                    <input type="text" class="form-control" placeholder="Enter your email">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-sm text-center text-white" type="button" name="button">Subscribe now</button>
+                    </div
+                </div>
+            </div>
+
+            <br>
+            <div class="card-header bg-primary text-light">
+                <h2 class="lead">Categories</h2>
+            </div>
+
+            <div class="card-body">
+                <?php
+                global $connectingDB;
+                $sql = "SELECT * FROM category ORDER BY id DESC";
+                $stmt = $connectingDB->query($sql);
+
+                while($dataRows = $stmt->fetch()){
+                    $categoryId = $dataRows['id'];
+                    $categoryName = $dataRows['title'];
+                    ?>
+                    <a href="Blog.php?category=<?=$categoryName;?>"><span class="heading"><?= $categoryName;?></span><br></a>
+
+                <?php } ?>
+
+            </div>
+
+            <br>
+            <div class="card">
+                <div class="card-header bg-info text-light">
+                    <h2 class="lead">Recent Posts</h2>
+                </div>
+                <div class="card-body">
+
+                    <?php
+                    global $connectingDB;
+                    $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 0,5";
+                    $stmt = $connectingDB->query($sql);
+
+                    while($dataRows = $stmt->fetch()){
+                        $Id = $dataRows['id'];
+                        $Title = $dataRows['title'];
+                        $DateTime = $dataRows['datetime'];
+                        $Image = $dataRows['image'];
+                        ?>
+
+                        <div class="media">
+                            <img src="upload/<?= htmlentities($Image);?>" class="d-block img-fluid align-self-start local-right-area" alt="">
+                            <div class="media-body ml-2">
+                                <a href="FullPost.php?id=<?= htmlentities($Id);?>"><h6 class="lead"><?= htmlentities($Title);?></h6></a>
+                                <p class="small"><?=htmlentities($DateTime);?></p>
+                            </div>
+
+                        </div>
+                        <hr>
+                    <?php } ?>
+
+                </div>
+            </div>
         </div>
+    </div>
+
+
     </div>
 </div>
 <br>
