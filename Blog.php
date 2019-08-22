@@ -132,7 +132,8 @@ require_once 'includes/sessions.php';
                     <div class="card-body">
                         <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
 
-                        <small class="text-muted">Category: <span class="text-dark"><?= htmlentities($category);?> - </span> Written by <span class="text-dark"><?php echo htmlentities($Admin) ;?></span> on <?php echo htmlentities($DateTime) ;?></small>
+                        <small class="text-muted">Category: <span class="text-dark"><?= htmlentities($category);?> - </span> Written by <span class="text-dark"><a
+                                        href="Profile.php?username=<?= htmlentities($Admin);?>"><?php echo htmlentities($Admin) ;?></a></span> on <?php echo htmlentities($DateTime) ;?></small>
                         <span style="float: right;" class="badge badge-dark text-light">Comments
                             <?php
                             echo  ApproveCommentsAcordingToPost($PostId);
