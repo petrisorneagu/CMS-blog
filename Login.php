@@ -26,7 +26,7 @@ if(isset($_POST['Submit'])){
            if(isset($_SESSION['TrackingURL'])){
                Redirect_to($_SESSION['TrackingURL']);
            }else{
-               Redirect_to('dashboard.php');
+               Redirect_to('Dashboard.php');
            }
 
            Redirect_to('Dashboard.php');

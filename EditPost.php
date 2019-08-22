@@ -50,9 +50,6 @@ if(isset($_POST['Submit'])){
 
         $execute = $connectingDB->query($sql);
 
-
-
-
         move_uploaded_file($_FILES['image']['tmp_name'], $target);
         if($execute){
             $_SESSION['SuccessMessage'] = 'Post updated successfully';
