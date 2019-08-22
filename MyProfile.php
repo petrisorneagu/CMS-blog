@@ -16,62 +16,59 @@ $stmt = $connectingDB->query($sql);
 
 while($dataRows = $stmt->fetch()){
     $adminName = $dataRows['aname'];
+    $existingHeadline = $dataRows['aheadline'];
+    $existingBio = $dataRows['abio'];
+    $existingImage = $dataRows['aimage'];
+    $existingUsername = $dataRows['username'];
 }
-
-
-
-
-
 
 $currentTime = time();
 $dateTime = strftime('%B-%d-%Y %H:%M:%S' , $currentTime);
 
 if(isset($_POST['Submit'])){
-    $postTitle = $_POST['postTitle'];
-    $category = $_POST['category'];
+    $aName = $_POST['name'];
+    $headline = $_POST['Headline'];
+    $bio = $_POST['bio'];
     $image = $_FILES['image']['name'];
-    $postText = $_POST['PostDescription'];
 
-    $Admin = $_SESSION['AdminName'];
 //    upload image dir
-    $target = 'upload/' . basename($_FILES['image']['name']);
+    $target = 'images/'.basename($_FILES['image']['name']);
 
-    if(empty($postTitle)){
-        $_SESSION['ErrorMessage'] = 'Fill in post title';
-
-        Redirect_to('addNewPosts.php');
-    } elseif(strlen($postTitle) < 5 ) {
-        $_SESSION['ErrorMessage'] = 'Post title must be greater than 5 characters';
-        Redirect_to('addNewPosts.php');
+    if(strlen($headline) > 30 ) {
+        $_SESSION['ErrorMessage'] = 'Headline should not be greater than 30 characters';
+        Redirect_to('MyProfile.php');
     }
-    elseif(strlen($postTitle) > 999 ) {
-        $_SESSION['ErrorMessage'] = 'Post title should not exceed more than 1000 characters';
-        Redirect_to('addNewPosts.php');
+    elseif(strlen($bio) > 500 ) {
+        $_SESSION['ErrorMessage'] = 'Bio should not be greater than 500 characters';
+        Redirect_to('MyProfile.php');
     }else{
-//        insert data into database
-        $sql = "INSERT INTO posts (datetime, title, category, author, image, post)";
-        $sql .= "VALUES (:datetime, :postTitle, :category, :admin, :image, :PostDescription)"; //dummy values
-        $stmt = $connectingDB->prepare($sql);
+//        update query
+        global $connectingDB;
 
-        $stmt->bindValue(':datetime', $dateTime);
-        $stmt->bindValue(':postTitle', $postTitle);
-        $stmt->bindValue(':category', $category);
-        $stmt->bindValue(':admin', $Admin);
-        $stmt->bindValue(':image', $image);
-        $stmt->bindValue(':PostDescription', $postText);
+//            don't update the image with null, unless if is uploaded anew one
+        if(!empty($image) && isset($aName)){
+            $sql = "UPDATE admins 
+                SET aname = '$aName', aheadline = '$headline', aimage = '$image', abio = '$bio'
+                WHERE id = '$AdminId'";
+        }else{
+            $sql = "UPDATE admins 
+                SET aname = '$aName', aheadline = '$headline', abio = '$bio'
+                WHERE id = '$AdminId'";
+        }
 
-        $execute=$stmt->execute();
+        $execute = $connectingDB->query($sql);
         move_uploaded_file($_FILES['image']['tmp_name'], $target);
+
+
         if($execute){
-            $_SESSION['SuccessMessage'] = 'Post with id: '.$connectingDB->lastInsertId().' was added successfully';
-            Redirect_to('addNewPosts.php');
+            $_SESSION['SuccessMessage'] = 'Details updated successfully';
+            Redirect_to('MyProfile.php');
         }else{
             $_SESSION['ErrorMessage'] = 'Something went wrong';
-            Redirect_to('addNewPosts.php');
+            Redirect_to('MyProfile.php');
         }
     }
 }
-
 
 ?>
 
@@ -139,7 +136,8 @@ if(isset($_POST['Submit'])){
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1> <i class="fas fa-user mr-2" style="color: rgba(62,81,180,0.7)"> </i>My Profile</h1>
+                <h1> <i class="fas fa-user mr-2 text-success"> </i> @<?=$existingUsername;?></h1>
+                <small><?= $existingHeadline;?></small>
             </div>
         </div>
     </div>
@@ -155,10 +153,8 @@ if(isset($_POST['Submit'])){
                     <h3><?=$adminName;?></h3>
                 </div>
                 <div class="card-body">
-                    <img src="images/user.png" class="block img-fluid mb-3" alt="">
-                    <div>
-                        Between my strong passion and ridiculous commitment to trying new strategies and ideas, my site took off. Eventually I launched a graphic design studio through my blog, and three months later, I was doing it full time.
-                    </div>
+                    <img src="images/<?=$existingImage;?>" class="block img-fluid mb-3" alt="">
+                    <div><?= $existingBio;?></div>
                 </div>
             </div>
 
@@ -173,7 +169,7 @@ if(isset($_POST['Submit'])){
             echo  SuccessMessage();
             ?>
 
-            <form action="MyProfile.php.php" method="post" enctype="multipart/form-data">
+            <form action="MyProfile.php" method="post" enctype="multipart/form-data">
                 <div class="card bg-dark text-light">
                     <div class="card-header bg-secondary text-light">
                         <h4>Edit profile</h4>
@@ -181,15 +177,16 @@ if(isset($_POST['Submit'])){
 
                     <div class="card-body">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" id="title" placeholder="Your name" value="">
+                            <input type="text" class="form-control" name="name" id="title" placeholder="Your name" value=
+                            "<?php echo (isset($_POST['name'])) ? htmlspecialchars($_POST['name']) : $adminName; ?>">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="Headline" id="title" placeholder="Headline">
+                            <input type="text" class="form-control" name="Headline" id="title" placeholder="Headline" value="<?php echo (isset($_POST['Headline'])) ? htmlspecialchars($_POST['Headline']) : $existingHeadline; ?>">
                             <small class="text-muted">Add a professional headline </small>
                             <span class="text-danger">Not more than 12 characters</span>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" name="PostDescription" id="bio" cols="30" rows="10" placeholder="Bio"></textarea>
+                            <textarea class="form-control" name="bio" id="bio" cols="30" rows="10" placeholder="Bio"><?php echo (isset($_POST['bio'])) ? htmlspecialchars($_POST['bio']) : $existingBio; ?></textarea>
                         </div>
                         <div class="form-group">
                             <div class="custom-file">
@@ -244,5 +241,10 @@ if(isset($_POST['Submit'])){
     $('#year').text(new Date().getFullYear());
 
 </script>
+
+<script>
+
+</script>
+
 </body>
 </html>
