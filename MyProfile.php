@@ -173,6 +173,44 @@ if(isset($_POST['Submit'])){
             echo  SuccessMessage();
             ?>
 
+            <form action="MyProfile.php.php" method="post" enctype="multipart/form-data">
+                <div class="card bg-dark text-light">
+                    <div class="card-header bg-secondary text-light">
+                        <h4>Edit profile</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" id="title" placeholder="Your name" value="">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="Headline" id="title" placeholder="Headline">
+                            <small class="text-muted">Add a professional headline </small>
+                            <span class="text-danger">Not more than 12 characters</span>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="PostDescription" id="bio" cols="30" rows="10" placeholder="Bio"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="image" id="imageSelect" value="">
+                                <label for="imageSelect" class="custom-file-label">Select image</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="Dashboard.php" class="btn btn-warning btn-block mb-2"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
+                            </div>
+                            <div class="col-lg-6">
+                                <button  type="submit" name="Submit" class="btn btn-success btn-block mb-2`">
+                                    <i class="fas fa-check">Publish</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
         </div>
     </div>
