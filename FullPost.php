@@ -145,6 +145,13 @@ if(isset($_POST['Submit'])){
                 }
                 $sql = "SELECT * FROM posts WHERE id = '$PostIdFromUrl'";
                 $stmt = $connectingDB->query($sql);
+                $result = $stmt->rowCount();
+
+                if($result != 1){
+                    $_SESSION['ErrorMessage'] = 'Bad request!';
+                    Redirect_to('Blog.php');
+
+                }
             }
             while($dataRows = $stmt->fetch()){
                 $PostId = $dataRows['id'];
@@ -169,7 +176,7 @@ if(isset($_POST['Submit'])){
                              ?>
                         </span>
                         <hr>
-                        <p class="card-text"> <?php echo htmlentities($PostDescription);  ?>
+                        <p class="card-text"> <?php echo strip_tags($PostDescription);  ?>
                         </p>
                 </div>
             </div>

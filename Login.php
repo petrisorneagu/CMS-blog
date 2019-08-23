@@ -4,7 +4,7 @@ require_once 'includes/functions.php';
 require_once 'includes/sessions.php';
 
 if(isset($_SESSION['UserId'])){
-    Redirect_to('dashboard.php');
+    Redirect_to('Dashboard.php');
 }
 
 if(isset($_POST['Submit'])){
