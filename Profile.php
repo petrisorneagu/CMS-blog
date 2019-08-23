@@ -1,3 +1,31 @@
+<?php
+require_once 'includes/DB.php';
+require_once 'includes/functions.php';
+require_once 'includes/sessions.php';
+
+$searchQueryParameter = $_GET['username'];
+global $connectingDB;
+$sql = "SELECT aname, aheadline, abio, aimage FROM admins WHERE username = :username";
+$stmt = $connectingDB->prepare($sql);
+$stmt->bindValue(':username', $searchQueryParameter);
+$stmt->execute();
+$result = $stmt->rowCount();
+
+//fetch data only if found the user in db
+if($result == 1){
+    while($dataRows = $stmt->fetch()){
+        $existingName = $dataRows['aname'];
+        $existingBio = $dataRows['abio'];
+        $existingImage = $dataRows['aimage'];
+        $existingHeadline = $dataRows['aheadline'];
+    }
+}else{
+    $_SESSION['ErrorMessage'] = 'Bad Request !!';
+     Redirect_to('Blog.php?page=1');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,8 +89,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1> <i class="fas fa-user text-success mr-2"  style="color: rgba(62,81,180,0.7)"> </i> Name</h1>
-                <h3>Headline</h3>
+                <h1> <i class="fas fa-user text-success mr-2"  style="color: rgba(62,81,180,0.7)"> </i> <?= $existingName;?></h1>
+                <h3><?= $existingHeadline;?></h3>
             </div>
         </div>
     </div>
@@ -70,12 +98,12 @@
 <section class="container py-2 mb-4">
     <div class="row">
         <div class="col-md-3">
-            <img src="images/user.png" class="d-block img-fluid mb-3" alt="">
+            <img src="images/<?=$existingImage;?>" class="d-block img-fluid mb-3" alt="">
         </div>
         <div class="col-md-9" style="min-height: 600px">
                 <div class="card">
                     <div class="card-body">
-                        <p class="lead">The value in a text field (and in a password field and in a hidden field, as well) is provided in its value attribute. However, the data there must be properly encoded with htmlspecialchars() to get rid of dangerous characters such as ' or < or >. The code snippet in the preceding code expects the form to be submitted back to itself; thus, it extracts the current value of the text field from $_POST (it would work analogously with $_GET).</p>
+                        <p class="lead"><?= $existingBio;?></p>
                     </div>
                 </div>
         </div>
