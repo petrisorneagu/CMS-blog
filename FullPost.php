@@ -269,7 +269,7 @@ if(isset($_POST['Submit'])){
             </div>
             <div class="card-body">
                 <button class="btn btn-success btn-block text-center text-white">Join the forum</button>
-                <button class="btn btn-danger btn-block text-center text-white">Login</button>
+                <button class="btn btn-danger btn-block text-center text-white"><a href="Login.php">Login</a></button>
                 <div class="input-group mb-3 mt-2">
                     <input type="text" class="form-control" placeholder="Enter your email">
                     <div class="input-group-append">

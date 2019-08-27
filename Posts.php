@@ -130,7 +130,7 @@ confirm_Login();
                 <?php
                 $sr = 0;
 
-                $sql = "SELECT * FROM posts";
+                $sql = "SELECT * FROM posts ORDER BY datetime ASC";
                 $stmt = $connectingDB->query($sql);
 
                 while($dataRows = $stmt->fetch()) {
